@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="qdh.dao.entity.order">
+    <class name="CurrentBrands" table="current_brands">
+    	<cache usage="read-write" region="qdh"/>
+        <id name="id" column="id">
+            <generator class="identity" />
+        </id>
+        <many-to-one name="year" column="year_id" class="qdh.dao.entity.product.Year" lazy="false"/>
+        <many-to-one name="quarter" column="quarter_id" class="qdh.dao.entity.product.Quarter" lazy="false"/>
+        <many-to-one name="brand" column="brand_id" class="qdh.dao.entity.product.Brand" lazy="false"/>
+        <property name="numOfBarcodes" column="num_of_barcodes" type="integer"/>
+        <property name="updateUser" column="update_user" type="string"/>
+        <property name="updateDate" column="update_date" type="timestamp"/>
+    </class> 
+    <class name="Customer" table="customer">
+    	<cache usage="read-write" region="qdh"/>
+        <id name="id" column="id">
+            <generator class="assigned" />
+        </id>
+        <property name="custName" column="cust_name" type="string"/>
+        <property name="custRegion" column="cust_region" type="string"/>
+        <property name="password" column="password" type="string"/>
+        <property name="chainStoreName" column="chain_store_name" type="string"/>
+        <property name="chainId" column="chain_id" type="integer"/>
+        <property name="updateUser" column="update_user" type="string"/>
+        <property name="updateDate" column="update_date" type="timestamp"/>
+        <property name="status" column="status" type="integer"/>
+    </class>    
+    <class name="CustOrderProduct" table="cust_order_product">
+    	<cache usage="read-write" region="qdh"/>
+        <composite-id>
+             <key-many-to-one name="productBarcode" column="product_barcode_id" class="qdh.dao.entity.product.ProductBarcode" lazy="false"/>  
+             <key-property name="custId" column="cust_id" type="integer"></key-property>       
+        </composite-id>
+        <property name="quantity" column="quantity" type="integer"/>
+        <!--  <property name="sumWholePrice" column="sum_whole_price" type="double"/>-->
+        <property name="sumRetailPrice" column="sum_retail_price" type="double"/>
+        <property name="lastUpdateTime" column="last_update_time" type="timestamp"/>
+        <property name="status" column="status" type="integer"/>
+        <property name="orderIdentity" column="order_identity" type="string"/>
+    </class>   
+    <class name="ProductCategoryInSystem" table="production_category_in_system">
+        <id name="categoryId" column="category_id">
+            <generator class="assigned" />
+        </id>
+    </class>        
+</hibernate-mapping>
